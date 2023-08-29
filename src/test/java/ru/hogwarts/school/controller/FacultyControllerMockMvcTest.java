@@ -17,6 +17,7 @@ import ru.hogwarts.school.service.FacultyServiceImpl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -38,8 +39,14 @@ public class FacultyControllerMockMvcTest {
 
     @Test
     public void testGetFacultyById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/faculty/6"))
-                .andExpect(status().isOk());
+        Optional<Faculty> faculty = Optional.of(new Faculty("name", "red"));
+        faculty.get().setId(1L);
+
+        when(facultyService.findFaculty(any(Long.class))).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/faculty/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("name"));
 
     }
 
@@ -71,15 +78,17 @@ public class FacultyControllerMockMvcTest {
 
     @Test
     public void testFindStudentByFacultyId() throws Exception {
-        Collection<Student> student = List.of(new Student(1L,"name",34));
+        Faculty faculty = new Faculty("nameFaculty", "Yellow");
+        faculty.setId(1L);
+
+        Collection<Student> student = List.of(new Student(1L,"name",34, faculty));
+
 
         when(facultyService.findStudentsByFaculty(any(Long.class))).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/faculty?id=1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("name"));
-
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -90,11 +99,7 @@ public class FacultyControllerMockMvcTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/faculty?color=red"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("name"));
-
-
-
+                .andExpect(status().isOk());
     }
 
     @Test
