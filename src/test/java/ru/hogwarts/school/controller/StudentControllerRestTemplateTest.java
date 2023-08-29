@@ -7,15 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import ru.hogwarts.school.exeptions.StudentNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.StudentService;
 
-import java.security.PrivateKey;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentControllerRestTemplateTest {
@@ -90,8 +85,8 @@ public class StudentControllerRestTemplateTest {
         testRestTemplate.delete("http://localhost:" + port + "/student/1");
 
         Assertions
-                .assertThat(this.testRestTemplate.getForEntity("http://localhost:" + port + "/student/1", String.class))
-                .isNull();
+                .assertThat(this.testRestTemplate.getForEntity("http://localhost:" + port + "/student/1", String.class).getStatusCode())
+                .isEqualTo(HttpStatus.NOT_FOUND);
     }
 
 }
