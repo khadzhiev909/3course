@@ -11,8 +11,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyServiceImpl;
+
+import java.util.Collection;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -66,12 +70,30 @@ public class FacultyControllerMockMvcTest {
     }
 
     @Test
-    public void testFindFacultyByStudentId() {
+    public void testFindStudentByFacultyId() throws Exception {
+        Collection<Student> student = List.of(new Student(1L,"name",34));
+
+        when(facultyService.findStudentsByFaculty(any(Long.class))).thenReturn(student);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty?id=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("name"));
 
     }
 
     @Test
-    public void testFindFacultyByColor() {
+    public void testFindFacultyByColor() throws Exception {
+        Collection<Faculty> faculty = List.of(new Faculty("name","red"));
+
+        when(facultyService.findFacultyByColor("red")).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty?color=red"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("name"));
+
+
 
     }
 
@@ -105,7 +127,13 @@ public class FacultyControllerMockMvcTest {
     }
 
     @Test
-    public void testGetFacultyByName() {
+    public void testGetFacultyByName() throws Exception {
+        Faculty faculty = new Faculty("name","red");
 
+        when(facultyService.findFacultyByName("name")).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/faculty?name=name"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("name"));
     }
 }

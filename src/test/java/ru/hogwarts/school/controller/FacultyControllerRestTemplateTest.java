@@ -70,6 +70,6 @@ public class FacultyControllerRestTemplateTest {
         ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/1", Faculty.class);
 
         Assertions
-                .assertThat(facultyResponseEntity).isNull();
+                .assertThat(facultyResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

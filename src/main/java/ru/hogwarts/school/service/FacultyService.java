@@ -22,7 +22,7 @@ public interface FacultyService {
 
     Collection<Faculty> findFacultyByColor(String color);
 
-    Collection<Student> findStudentsBuFaculty(Long id);
+    Collection<Student> findStudentsByFaculty(Long id);
 
     Collection<Faculty> getAllByColor(String color);
 }

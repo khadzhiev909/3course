@@ -64,8 +64,8 @@ public class FacultyController {
     }
 
     @GetMapping("id")
-    public ResponseEntity<Collection<Student>> findStudentsBuFaculty(@RequestParam Long id) {
-        return ResponseEntity.ok(facultyService.findStudentsBuFaculty(id));
+    public ResponseEntity<Collection<Student>> findStudentsByFaculty(@RequestParam Long id) {
+        return ResponseEntity.ok(facultyService.findStudentsByFaculty(id));
     }
 
 }
