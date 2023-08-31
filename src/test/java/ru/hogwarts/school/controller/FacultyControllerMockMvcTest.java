@@ -89,7 +89,7 @@ public class FacultyControllerMockMvcTest {
         when(facultyRepository.getById(any(Long.class))).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty?id=1")
+                        .get("/faculty/id?id=1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
