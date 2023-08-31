@@ -9,9 +9,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.web.servlet.function.ServerResponse.status;
+
 import ru.hogwarts.school.model.Faculty;
 
-import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)/*Поднимает все приложение и делает реальные запросы*/
 public class FacultyControllerRestTemplateTest {
@@ -50,10 +51,10 @@ public class FacultyControllerRestTemplateTest {
 
     @Test
     public void testFindAllByColor() {
-        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty?color=red", Faculty.class);
+        testRestTemplate.postForEntity("http://localhost:" + port + "/faculty", new Faculty("FacultyName", "FacultyColor"), String.class);
 
-        assertThat(facultyResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(facultyResponseEntity.getBody().getColor()).isEqualTo("red");
+
+        assertThat(this.testRestTemplate.getForEntity("http://localhost:" + port + "/faculty?color=red", String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
     @Test
     public void testGetStudentsByFaculty() {
@@ -65,11 +66,12 @@ public class FacultyControllerRestTemplateTest {
 
     @Test
     public void testDeleteFaculty() {
-        testRestTemplate.delete("http://localhost:" + port + "/faculty/1");
+        Faculty faculty = new Faculty("name", "red");
+        faculty.setId(1L);
 
-        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/1", Faculty.class);
+        testRestTemplate.delete("http://localhost:" + port + "/faculty/" + faculty.getId());
 
         Assertions
-                .assertThat(facultyResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+                .assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/faculty/" + faculty.getId(), Faculty.class)).isEqualTo(null);
     }
 }

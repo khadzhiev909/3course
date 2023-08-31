@@ -82,20 +82,24 @@ public class FacultyControllerMockMvcTest {
         faculty.setId(1L);
 
         Collection<Student> student = List.of(new Student(1L,"name",34, faculty));
+        faculty.setStudent(student);
 
 
-        when(facultyService.findStudentsByFaculty(any(Long.class))).thenReturn(student);
+
+        when(facultyRepository.getById(any(Long.class))).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty?id=1"))
+                        .get("/faculty?id=1")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
     }
 
     @Test
     public void testFindFacultyByColor() throws Exception {
-        Collection<Faculty> faculty = List.of(new Faculty("name","red"));
+        List<Faculty> faculty = List.of(new Faculty("name","red"));
 
-        when(facultyService.findFacultyByColor("red")).thenReturn(faculty);
+        when(facultyRepository.findAll()).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/faculty?color=red"))

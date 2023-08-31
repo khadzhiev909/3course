@@ -109,14 +109,14 @@ public class StudentControllerMockMvcTest {
     @Test
     public void testGetFacultyByStudent() throws Exception {
 
-        Student student = new Student(1L, "name", 34);
-
-        when(studentService.getStudentById(1L)).thenReturn(student);
-
         Faculty faculty = new Faculty("name", "red");
         faculty.setId(1L);
 
-        when(studentService.findFacultyByStudent(any(Long.class))).thenReturn(faculty);
+        Student student = new Student(1L, "name", 34);
+        student.setFaculty(faculty);
+
+        when(studentRepository.getById(any(Long.class))).thenReturn(student);
+
 
 
         mockMvc.perform(MockMvcRequestBuilders
