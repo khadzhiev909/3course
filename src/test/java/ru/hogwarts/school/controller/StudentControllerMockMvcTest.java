@@ -16,6 +16,8 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentServiceImpl;
 
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,12 +40,13 @@ public class StudentControllerMockMvcTest {
     public void testFindStudentById() throws Exception {
         Student student = new Student(1L, "name", 34);
 
-        when(studentService.getStudentById(1L)).thenReturn(student);
+        when(studentRepository.getById(1L)).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/student/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
     }
 
 
