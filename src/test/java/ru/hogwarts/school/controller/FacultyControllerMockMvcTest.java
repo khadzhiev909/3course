@@ -93,6 +93,7 @@ public class FacultyControllerMockMvcTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
+
     }
 
     @Test

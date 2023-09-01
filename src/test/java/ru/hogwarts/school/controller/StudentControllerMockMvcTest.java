@@ -29,7 +29,6 @@ public class StudentControllerMockMvcTest {
 
     @SpyBean
     private StudentServiceImpl studentService;
-
     @MockBean
     private StudentRepository studentRepository;
 

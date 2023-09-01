@@ -30,7 +30,6 @@ public class StudentServiceImpl implements StudentService {
     }
 
     //.orElseThrow(() -> new StudentNotFoundException("Not Found Student"))
-
     @Override
     public Student editStudent(Student student) {
         return studentRepository.save(student);

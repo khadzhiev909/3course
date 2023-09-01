@@ -26,7 +26,6 @@ public class StudentControllerRestTemplateTest {
                 .assertThat(this.testRestTemplate.getForEntity("http://localhost:" + port + "/student/1", Student.class))
                 .isNotNull();
     }
-
     @Test
     public void testCreateStudent() {
         Faculty faculty = new Faculty("name", "red");
