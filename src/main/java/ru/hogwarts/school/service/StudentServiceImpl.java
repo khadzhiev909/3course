@@ -1,36 +1,75 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exeptions.StudentNotFoundException;
+import ru.hogwarts.school.model.Age;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 
 @Service
-public class StudentServiceImpl implements StudentService{
-    private final Map<Long, Student> storageStudents = new HashMap<>();
-    private long count = 0;
+public class StudentServiceImpl implements StudentService {
+
+
+    private final StudentRepository studentRepository;
+
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @Override
     public Student createStudent(Student student) {
-        student.setId(count++);
-        storageStudents.put(student.getId(), student);
-        return student;
+        return studentRepository.save(student);
     }
 
     @Override
-    public Student findStudent(long id) {
-        return storageStudents.get(id);
+    public Student getStudentById(long id) {
+        return studentRepository.getById(id);
+    }
+
+    //.orElseThrow(() -> new StudentNotFoundException("Not Found Student"))
+    @Override
+    public Student editStudent(Student student) {
+        return studentRepository.save(student);
     }
 
     @Override
-    public Student editStudent(long id, Student student) {
-        storageStudents.put(student.getId(), student);
-        return student;
+    public void removeStudent(long id) {
+        studentRepository.deleteById(id);
     }
 
     @Override
-    public Student removeStudent(long id) {
-        return storageStudents.remove(id);
+    public Collection<Student> findAllStudentsByAgeBetween(int max, int min) {
+        return studentRepository.findByAgeBetween(max, min);
     }
+
+    @Override
+    public Faculty findFacultyByStudent(Long id) {
+        return studentRepository.getById(id).getFaculty();
+//        return getStudentById(id).getFaculty();
+    }
+
+    @Override
+    public Collection<Student> getAll() {
+        return studentRepository.findAll();
+    }
+
+    /* ---------------------------------------------------------------------------*/
+    @Override
+    public Long getAmountStudent() {
+        return studentRepository.getNumberOfAllStudents();
+    }
+
+    @Override
+    public Age getAverageOfStudent() {
+        return studentRepository.getAverageAge();
+    }
+
+    @Override
+    public Collection<Student> getTopFiveStudents() {
+        return studentRepository.getTopFiveStudents();
+    }
+
 }
