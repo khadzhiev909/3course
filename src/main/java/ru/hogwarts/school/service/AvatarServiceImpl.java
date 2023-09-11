@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,8 +41,12 @@ public class AvatarServiceImpl implements AvatarService {
         this.avatarRepository = avatarRepository;
     }
 
+    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
     @Override
     public Long uploadAvatar(Long id, MultipartFile file) throws IOException {
+
+        logger.info("upload");
         //получаем студента
         Student student = studentService.getStudentById(id);
 
@@ -95,11 +101,14 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar findAvatar(Long studentId) {
+        logger.info("find");
         return avatarRepository.findById(studentId).orElse(new Avatar());
     }
 
     @Override
     public List<Avatar> getAllAvatars(Integer page, Integer size) {
+        logger.info("all");
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Avatar> avatars = avatarRepository.findAll(pageable);
         return avatars.stream().toList();
@@ -107,6 +116,7 @@ public class AvatarServiceImpl implements AvatarService {
 
 
     public Avatar findStudentAvatar(Long studentId) {
+        logger.info("findBiStudentID");
         return avatarRepository.findByStudent_Id(studentId).orElse(new Avatar());
     }
 
