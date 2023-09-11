@@ -5,6 +5,8 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.OptionalDouble;
 
 public interface StudentService{
     Student createStudent(Student student);
@@ -27,4 +29,8 @@ public interface StudentService{
     Age getAverageOfStudent();
 
     Collection<Student> getTopFiveStudents();
+
+    List<String> getStudentNamesStartWithA();
+
+    OptionalDouble getAverageAge();
 }

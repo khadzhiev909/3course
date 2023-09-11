@@ -10,7 +10,9 @@ import ru.hogwarts.school.service.StudentServiceImpl;
 import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 @RestController
 @RequestMapping("student")
@@ -77,4 +79,16 @@ public class StudentController {
         return studentService.getTopFiveStudents();
     }
 
+
+    /* ------------------------------------------------------------------ */
+
+    @GetMapping("/with-start-A")
+    public List<String> getStudentNamesWithFirstLetter() {
+        return studentService.getStudentNamesStartWithA();
+    }
+
+    @GetMapping("/average")
+    public OptionalDouble getAverageAge() {
+        return studentService.getAverageAge();
+    }
 }
