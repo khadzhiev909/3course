@@ -3,13 +3,14 @@ package ru.hogwarts.school.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.exeptions.StudentNotFoundException;
 import ru.hogwarts.school.model.Age;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.OptionalDouble;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -87,4 +88,22 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.getTopFiveStudents();
     }
 
+    @Override
+    public List<String> getStudentNamesStartWithA() {
+        logger.info("getStudentNamesStartWithA");
+        return studentRepository.findAll()
+                .stream()
+                .map(student -> student.getName().toUpperCase())
+                .filter(name -> name.startsWith("A"))
+                .sorted(String::compareTo).toList();
+
+    }
+
+    @Override
+    public OptionalDouble getAverageAge() {
+        return studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average();
+    }
 }

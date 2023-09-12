@@ -26,4 +26,6 @@ public interface FacultyService {
 
 
     Collection<Faculty> getAllByColor(String color);
+
+    String getLongestFacultyName();
 }

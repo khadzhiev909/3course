@@ -53,12 +53,12 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(params ={"name"})
+    @GetMapping(params = {"name"})
     public ResponseEntity<Faculty> findFacultyByName(@RequestParam String name) {
         return ResponseEntity.ok(facultyService.findFacultyByName(name));
     }
 
-    @GetMapping(params ={"color"})
+    @GetMapping(params = {"color"})
     public ResponseEntity<Collection<Faculty>> findAllByColor(@RequestParam String color) {
         return ResponseEntity.ok(facultyService.findFacultyByColor(color));
     }
@@ -68,4 +68,8 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.findStudentsByFaculty(id));
     }
 
+    @GetMapping("/longest-name")
+    public String getLongestFacultyName() {
+        return facultyService.getLongestFacultyName();
+    }
 }
