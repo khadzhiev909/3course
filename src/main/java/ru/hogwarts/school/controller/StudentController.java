@@ -91,4 +91,18 @@ public class StudentController {
     public OptionalDouble getAverageAge() {
         return studentService.getAverageAge();
     }
+
+    /* ------------------------------------------------------------------ */
+
+    @GetMapping("/print-students-name")
+    public ResponseEntity<Void> printStudentsName() {
+        studentService.getAllNameOfStudents();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/print-sync-students-name")
+    public ResponseEntity<Void> printSyncStudentsName() {
+        studentService.getAllNameOfStudentsSync();
+        return ResponseEntity.ok().build();
+    }
 }
