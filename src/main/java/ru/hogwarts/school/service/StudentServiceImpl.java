@@ -106,4 +106,62 @@ public class StudentServiceImpl implements StudentService {
                 .mapToInt(Student::getAge)
                 .average();
     }
+
+    @Override
+    public void getAllNameOfStudents() {
+        logger.info("getAllNameOfStudents");
+        List<Student> names = studentRepository.findAll();
+
+        System.out.println(names.get(0).getName());
+        System.out.println(names.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            System.out.println(names.get(2).getName());
+            System.out.println(names.get(3).getName());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            System.out.println(names.get(4).getName());
+            System.out.println(names.get(5).getName());
+        });
+
+
+        thread1.start();
+        thread2.start();
+
+    }
+
+    @Override
+    public void getAllNameOfStudentsSync() {
+        logger.info("getAllNameOfStudentsSync");
+        List<Student> names = studentRepository.findAll();
+
+        System.out.println(names.get(0).getName());
+        System.out.println(names.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            sync(names.get(2));
+            sync(names.get(3));
+        });
+
+        Thread thread2 = new Thread(() -> {
+            sync(names.get(4));
+            sync(names.get(5));
+        });
+
+
+        thread1.start();
+        thread2.start();
+
+    }
+
+    private synchronized void sync(Student student) {
+        System.out.println(student.getName());
+        try {
+            Thread.sleep(2000);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

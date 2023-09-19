@@ -34,4 +34,8 @@ public interface StudentService{
     List<String> getStudentNamesStartWithA();
 
     OptionalDouble getAverageAge();
+
+    void getAllNameOfStudents();
+
+    void getAllNameOfStudentsSync();
 }
